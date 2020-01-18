@@ -6,10 +6,10 @@ from dataclasses import dataclass
 COL_SOURCE = 0
 COL_QUESTION = 1
 COL_START_ANS = 2
-COL_END_ANS = 5
-COL_CORRECT_ANS = 6
-COL_TOPIC = 7
-COL_COMMENT = 8
+COL_END_ANS = 7
+COL_CORRECT_ANS = 8
+COL_TOPIC = 9
+COL_COMMENT = 10
 
 
 @dataclass
@@ -64,9 +64,10 @@ class QuizExporter:
                 answers=list()
             )
 
+            correct_ans = [int(ans) for ans in row[COL_CORRECT_ANS].split(",")]
             for i, col in enumerate(range(COL_START_ANS, COL_END_ANS + 1)):
-                correct_ans = [int(ans) for ans in row[COL_CORRECT_ANS].split(",")]
-                question.answers.append((row[col], (i + 1) in correct_ans))
+                if row[col]:
+                    question.answers.append((row[col], (i + 1) in correct_ans))
 
             self._questions.append(question)
 
