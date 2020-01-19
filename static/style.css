@@ -4,6 +4,11 @@ body {
   color: black;
   font-family: Assistant;
 }
+
+select {
+  font-family: Assistant;
+}
+
 h1 {
   font-size: 40pt;
   color: #63c5bc;
@@ -18,6 +23,7 @@ h1 {
 }
 
 #quiz-config table {
+    text-align: right;
     margin: auto;
 }
 

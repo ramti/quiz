@@ -49,10 +49,21 @@ class Question:
         return data
 
 
-class QuizExporter:
+class QuestionsLoader:
     def __init__(self, csv_rows):
         self._csv_rows = csv_rows
         self._questions = []
+        self._sources = []
+        self._topics = []
+
+    @staticmethod
+    def export_txt(questions):
+        return "\n\n".join(question.serialize_txt() for question in questions)
+
+    @staticmethod
+    def export_web_quiz(questions):
+        serialized = [question.serialize_web() for question in questions]
+        return [data for data in serialized if data]
 
     def _read_questions(self):
         for row in self._csv_rows:
@@ -64,22 +75,29 @@ class QuizExporter:
                 answers=list()
             )
 
-            correct_ans = [int(ans) for ans in row[COL_CORRECT_ANS].split(",")]
-            for i, col in enumerate(range(COL_START_ANS, COL_END_ANS + 1)):
-                if row[col]:
-                    question.answers.append((row[col], (i + 1) in correct_ans))
+            try:
+                correct_ans = [int(ans) for ans in row[COL_CORRECT_ANS].split(",")]
+                for i, col in enumerate(range(COL_START_ANS, COL_END_ANS + 1)):
+                    if row[col]:
+                        question.answers.append((row[col], (i + 1) in correct_ans))
 
-            self._questions.append(question)
+                self._questions.append(question)
+            except Exception as ex:
+                print(f"Error loading question: {ex}")
 
     def analyze(self):
         self._read_questions()
+        self._sources = list(set(question.source for question in self._questions))
+        self._topics = sorted(list(set(question.topic for question in self._questions if question.topic)))
 
-    def export_txt(self):
-        return "\n\n".join(question.serialize_txt() for question in self._questions)
+    def get_questions(self):
+        return self._questions
 
-    def export_web_quiz(self):
-        serialized = [question.serialize_web() for question in self._questions]
-        return json.dumps([data for data in serialized if data], indent=4)
+    def get_sources(self):
+        return self._sources
+
+    def get_topics(self):
+        return self._topics
 
 
 def parse_args():
@@ -107,14 +125,14 @@ def write_output(data, output_file_path):
 
 def main():
     args = parse_args()
-    exporter = QuizExporter(read_csv(args.csv))
+    exporter = QuestionsLoader(read_csv(args.csv))
     exporter.analyze()
 
     if args.txt:
-        write_output(exporter.export_txt(), args.txt)
+        write_output(exporter.export_txt(exporter.get_questions()), args.txt)
 
     if args.web:
-        write_output(exporter.export_web_quiz(), args.web)
+        write_output(json.dumps(exporter.export_web_quiz(exporter.get_questions()), indent=4), args.web)
 
 
 if __name__ == "__main__":

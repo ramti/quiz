@@ -14,12 +14,23 @@ def quiz():
 @app.route('/questions')
 def get_questions():
     num_questions = request.args.get('num')
-    if num_questions is None:
-        num_questions = -1
-    else:
+    source = request.args.get('source')
+    topic = request.args.get('topic')
+
+    if num_questions is not None:
         num_questions = int(num_questions)
 
-    return json.dumps(questions.get_questions(num_questions))
+    return json.dumps(questions.get_questions(num_questions, source, topic))
+
+
+@app.route('/sources')
+def get_sources():
+    return json.dumps(questions.get_sources())
+
+
+@app.route('/topics')
+def get_topics():
+    return json.dumps(questions.get_topics())
 
 
 if __name__ == "__main__":
