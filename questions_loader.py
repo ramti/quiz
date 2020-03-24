@@ -1,5 +1,6 @@
 import argparse
 import csv
+import random
 import json
 from dataclasses import dataclass
 
@@ -39,9 +40,15 @@ class Question:
                     correct_index = i
             answer_txt_list.append(answer_txt)
 
+        # correct_answer_txt = answer_txt_list[correct_index]
+        # random.shuffle(answer_txt_list)
+        # correct_index = answer_txt_list.index(correct_answer_txt)
+
         data = {
             'q': self.question,
             'options': answer_txt_list,
+            'topic': self.topic,
+            'source': self.source,
             'correctIndex': correct_index,
             'correctResponse': 'יפה!',
             'incorrectResponse': f'התשובה הנכונה: {answer_txt_list[correct_index]}'

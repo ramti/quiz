@@ -1,5 +1,7 @@
+let data_subject = $('#data_subject').text();
+
 function renderQuiz(num_questions, source, topic) {
-    let data = {}
+    let data = {"subject": data_subject}
 
     if (num_questions != -1) {
         data.num = num_questions;
@@ -17,17 +19,21 @@ function renderQuiz(num_questions, source, topic) {
     function(data) {
         let questions = data;
         $('#quiz').quiz({
-          //resultsScreen: '#results-screen',
-          counter: true,
-          //homeButton: '#custom-home',
-          counterFormat: 'שאלה %current מתוך %total',
-          questions: questions
+            resultsFormat: 'הצלחת %score שאלות מתוך %total!',
+            nextButtonText: 'הבא',
+            finishButtonText: 'סיום',
+            restartButtonText: 'התחלה מחדש',
+            counter: true,
+            counterFormat: 'שאלה %current מתוך %total',
+            questions: questions
         });
     });
 }
 
 function load_sources() {
-    $.getJSON("sources",
+    let data = {"subject": data_subject};
+
+    $.getJSON("sources", data,
     function(sources) {
         var $dropdown = $("#select-source");
         // Remove all the options
@@ -41,7 +47,9 @@ function load_sources() {
 }
 
 function load_topics() {
-    $.getJSON("topics",
+    let data = {"subject": data_subject};
+
+    $.getJSON("topics", data,
     function(sources) {
         var $dropdown = $("#select-topic");
         // Remove all the options
@@ -67,3 +75,8 @@ $("#quiz-render-btn").click(function () {
 
 load_sources();
 load_topics();
+//
+//renderQuiz(1, -1, 'אקולוגיה');
+//
+//$("#quiz").show();
+//$("#quiz-config").hide();
