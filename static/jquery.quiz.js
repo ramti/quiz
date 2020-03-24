@@ -74,6 +74,11 @@
           quizHtml += '<div class="question-container">';
           quizHtml += '<div id="quiz-q-info"><span class="q-source">' + question.source + '</span>';
           quizHtml += '<span class="q-topic">' + question.topic + '</span></div>';
+
+          if (question.img_link != "") {
+            quizHtml += '<img class="img_link" src="' + question.img_link + '" />';
+          }
+
           quizHtml += '<p class="question">' + question.q + '</p>';
           quizHtml += '<ul class="answers">';
           $.each(question.options, function(index, answer) {

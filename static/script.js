@@ -76,7 +76,7 @@ $("#quiz-render-btn").click(function () {
 load_sources();
 load_topics();
 //
-//renderQuiz(1, -1, 'אקולוגיה');
+//renderQuiz(2, -1, -1);
 //
 //$("#quiz").show();
 //$("#quiz-config").hide();

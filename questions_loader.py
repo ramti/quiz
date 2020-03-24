@@ -18,6 +18,7 @@ class Question:
     source: str
     question: str
     answers: list
+    img_link: str
     topic: str
     comment: str
 
@@ -49,6 +50,7 @@ class Question:
             'options': answer_txt_list,
             'topic': self.topic,
             'source': self.source,
+            'img_link': self.img_link,
             'correctIndex': correct_index,
             'correctResponse': 'יפה!',
             'incorrectResponse': f'התשובה הנכונה: {answer_txt_list[correct_index]}'
@@ -77,6 +79,7 @@ class QuestionsLoader:
             question = Question(
                 source=row[COL_SOURCE],
                 question=row[COL_QUESTION],
+                img_link="",
                 topic=row[COL_TOPIC],
                 comment=row[COL_COMMENT],
                 answers=list()
