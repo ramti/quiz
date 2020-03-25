@@ -19,7 +19,7 @@ class Card:
         if not self.heb and not self.eng:
             return {}
         elif self.heb and self.eng:
-            card_front = f"{self.heb} ({self.eng})"
+            card_front = f"{self.heb}\n({self.eng})"
         elif self.heb:
             card_front = self.heb
         else:
