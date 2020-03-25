@@ -1,6 +1,5 @@
 import argparse
 import csv
-import random
 import json
 from dataclasses import dataclass
 

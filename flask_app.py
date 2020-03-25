@@ -4,6 +4,7 @@ from flask import render_template, json, request
 from subjects import SUBJECTS_BY_NAME
 
 import questions
+import cards
 
 app = Flask(__name__)
 
@@ -32,14 +33,18 @@ def bio1():
 
 @app.route('/bio2')
 def bio2():
-    return my_render_template("construction.html")
     return render_subject("bio2")
 
 
 @app.route('/bio3')
 def bio3():
-    return my_render_template("construction.html")
+    # return my_render_template("construction.html")
     return render_subject("bio3")
+
+
+@app.route('/flashcards')
+def flashcards():
+    return my_render_template("flashcards.html")
 
 
 @app.route('/questions')
@@ -55,6 +60,12 @@ def get_questions():
     return json.dumps(questions.get_questions(subject, num_questions, source, topic))
 
 
+@app.route('/cards')
+def get_cards():
+    return json.dumps(cards.get_cards('bio1', -1))
+
+
+
 @app.route('/sources')
 def get_sources():
     subject = request.args.get('subject')
@@ -68,6 +79,7 @@ def get_topics():
 
 
 questions.load_questions()
+cards.load_cards()
 
 if __name__ == "__main__":
     app.run()
