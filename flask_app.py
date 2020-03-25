@@ -33,12 +33,13 @@ def bio1():
 
 @app.route('/bio2')
 def bio2():
+    return my_render_template("construction.html")
     return render_subject("bio2")
 
 
 @app.route('/bio3')
 def bio3():
-    # return my_render_template("construction.html")
+    return my_render_template("construction.html")
     return render_subject("bio3")
 
 
