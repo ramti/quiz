@@ -1,55 +1,69 @@
-$(document).ready(function() {
-    var colorArray = ["#706fff", "#ce6fff", "#e56d53", "#d7aa0f", "#97c043"];
-    var cardState;
-    var currentQuestion = 0;
-    var qbank = new Array;
+let currentQuestion = 0;
+let qbank = null;
 
-    loadDB();
+function beginActivity() {
+    $("#flashcard-area").empty();
+    let html = '<input id="flashcard-1" type="checkbox" /><label for="flashcard-1">';
+    html += '<section class="front" id="front">' + qbank[currentQuestion][0] + '</section>';
+    html += '<section class="back" id="back">' + qbank[currentQuestion][1] + '</section>';
+    html += '</label>';
+    $("#flashcard-area").html(html);
 
-    function loadDB() {
-        let data = {
-            "subject": ''
+    $("#back").css("background-color", "#34495E");
+    currentQuestion++;
+    $("#buttonArea").empty();
+    $("#buttonArea").append('<div id="nextButton">הכרטיסיה הבאה</div>');
+    $("#nextButton").on("click", function() {
+        if (currentQuestion < qbank.length) {
+            beginActivity();
+        } else {
+            displayFinalMessage();
         }
-        $.getJSON("cards", data,
-            function(data) {
-                for (i = 0; i < data.questionlist.length; i++) {
-                    qbank[i] = [];
-                    qbank[i][0] = data.questionlist[i].cardfront;
-                    qbank[i][1] = data.questionlist[i].cardback;
-                }
-                beginActivity();
-            });
-    } //loadDB
+    });
+}
 
-    function beginActivity() {
-        cardState = 0;
-        var color1 = colorArray[Math.floor(Math.random() * colorArray.length)];
+function displayFinalMessage() {
+    $("#buttonArea").empty();
+    $("#flashcard-area").fadeOut(500, function() {
+        $("#buttonArea").append('<div id="final-message">סיימת!</div>');
+    });
+}
 
-        $("#flashcard-area").empty();
-        let html = '<input id="flashcard-1" type="checkbox" /><label for="flashcard-1">';
-        html += '<section class="front" id="front">' + qbank[currentQuestion][0] + '</section>';
-        html += '<section class="back" id="back">' + qbank[currentQuestion][1] + '</section>';
-        html += '</label>';
-        $("#flashcard-area").html(html);
 
-//        $("#front").css("background-color", color1);
-        $("#back").css("background-color", "#34495E");
-        currentQuestion++;
-        $("#buttonArea").empty();
-        $("#buttonArea").append('<div id="nextButton">הכרטיסיה הבאה</div>');
-        $("#nextButton").on("click", function() {
-            if (currentQuestion < qbank.length) {
-                beginActivity();
-            } else {
-                displayFinalMessage();
+function renderFlashCards(num_cards, topic) {
+    let data = {"subject": data_subject}
+
+    if (num_cards != -1) {
+        data.num = num_cards;
+    }
+
+    if (topic != -1) {
+        data.topic = topic;
+    }
+
+    qbank = new Array;
+    $.getJSON("cards", data,
+        function(data) {
+            for (i = 0; i < data.questionlist.length; i++) {
+                qbank[i] = [];
+                qbank[i][0] = data.questionlist[i].cardfront;
+                qbank[i][1] = data.questionlist[i].cardback;
             }
-        }); //click function
-    } //beginactivity
+            currentQuestion = 0;
+            beginActivity();
+        });
+}
 
-    function displayFinalMessage() {
-        $("#buttonArea").empty();
-        $("#cardArea").empty();
-        $("#cardArea").append('<div id="finalMessage">סיימת!</div>');
-    } //final message
 
-});
+$("#cards-render-btn").click(function () {
+    num_cards = $("#select-num-cards").val();
+    topic = $("#select-topic").val();
+
+    $("#buttonArea").hide();
+    renderFlashCards(num_cards, topic);
+
+    $("#cards-config").fadeOut(500, function() {
+        $("#buttonArea").fadeIn(500);
+        $("#flashcard-area").fadeIn(500);
+    });
+})

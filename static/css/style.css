@@ -22,15 +22,19 @@ h1 {
 }
 
 .construction img {
-    width: 350px;
+    width: 300px;
 }
 
-#quiz-config {
+#hidden-data {
+    display: none;
+}
+
+#quiz-config, #cards-config {
     text-align: center;
     margin: auto;
 }
 
-#quiz-config table {
+#quiz-config table, #cards-config table {
     text-align: right;
     margin: auto;
 }
@@ -42,10 +46,16 @@ h1 {
     font-size: 14pt;
 }
 
-#quiz-render-btn  {
+.render-btn  {
     background: #54b072;
 }
 
+#goto-flashcards {
+    background: #b05495;
+    margin-top: 20px;
+    border-radius: 10px;
+    font-size: 16pt;
+}
 
 #quiz {
     display: none;

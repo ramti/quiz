@@ -11,6 +11,9 @@ subjects_db = {}
 def load_questions():
     global subjects_db
     for subject_data in SUBJECTS_BY_NAME.values():
+        if not subject_data.question_db:
+            continue
+
         module_dir = os.path.abspath(os.path.dirname(__file__))
         file_path = os.path.join(module_dir, subject_data.question_db)
         csv_data = questions_loader.read_csv(file_path)

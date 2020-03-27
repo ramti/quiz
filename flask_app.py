@@ -1,6 +1,6 @@
 import random
 from flask import Flask
-from flask import render_template, json, request
+from flask import render_template, json, request, abort
 from subjects import SUBJECTS_BY_NAME
 
 import questions
@@ -8,48 +8,33 @@ import cards
 
 app = Flask(__name__)
 
+CONSTRUCTION = ["bio3"]
+
 
 def my_render_template(*args, **kwargs):
     return render_template(*args, **kwargs, token=random.randint(0, 100))
 
 
-def render_subject(subject, *args, **kwargs):
-    return my_render_template("quiz.html",
-                              subject=subject,
-                              display_name=SUBJECTS_BY_NAME[subject].display_name,
-                              *args,
-                              **kwargs)
-
-
 @app.route('/')
-def quiz():
+def home():
     return my_render_template("home.html")
 
 
-@app.route('/bio1')
-def bio1():
-    return render_subject("bio1")
+@app.route('/quiz/<subject>')
+def quiz(subject):
+    if subject in CONSTRUCTION:
+        return my_render_template("construction.html")
+
+    if subject not in SUBJECTS_BY_NAME.keys():
+        abort(404)
+
+    return my_render_template("quiz.html",
+                              subject=subject,
+                              display_name=SUBJECTS_BY_NAME[subject].display_name)
 
 
-@app.route('/bio2')
-def bio2():
-    return my_render_template("construction.html")
-    return render_subject("bio2")
-
-
-@app.route('/bio3')
-def bio3():
-    return my_render_template("construction.html")
-    return render_subject("bio3")
-
-
-@app.route('/flashcards')
-def flashcards():
-    return my_render_template("flashcards.html")
-
-
-@app.route('/questions')
-def get_questions():
+@app.route('/quiz/questions')
+def get_quiz_questions():
     subject = request.args.get('subject')
     num_questions = request.args.get('num')
     source = request.args.get('source')
@@ -58,25 +43,50 @@ def get_questions():
     if num_questions is not None:
         num_questions = int(num_questions)
 
-    return json.dumps(questions.get_questions(subject, num_questions, source, topic))
+    return json.dumps(questions.get_questions(subject, num_questions, source=source, topic=topic))
 
 
-@app.route('/cards')
-def get_cards():
-    return json.dumps(cards.get_cards('bio1', -1))
-
-
-
-@app.route('/sources')
-def get_sources():
+@app.route('/quiz/sources')
+def get_quiz_sources():
     subject = request.args.get('subject')
     return json.dumps(questions.get_sources(subject))
 
 
-@app.route('/topics')
-def get_topics():
+@app.route('/quiz/topics')
+def get_quiz_topics():
     subject = request.args.get('subject')
     return json.dumps(questions.get_topics(subject))
+
+
+@app.route('/flash/<subject>')
+def flashcards(subject):
+    if subject in CONSTRUCTION:
+        return my_render_template("construction.html")
+
+    if subject not in SUBJECTS_BY_NAME.keys():
+        abort(404)
+
+    return my_render_template("flashcards.html",
+                              subject=subject,
+                              display_name=SUBJECTS_BY_NAME[subject].display_name)
+
+
+@app.route('/flash/topics')
+def get_flash_topics():
+    subject = request.args.get('subject')
+    return json.dumps(cards.get_topics(subject))
+
+
+@app.route('/flash/cards')
+def get_flash_cards():
+    subject = request.args.get('subject')
+    topic = request.args.get('topic')
+    num_cards = request.args.get('num')
+
+    if num_cards is not None:
+        num_cards = int(num_cards)
+
+    return json.dumps(cards.get_cards(subject, num_cards, topic=topic))
 
 
 questions.load_questions()

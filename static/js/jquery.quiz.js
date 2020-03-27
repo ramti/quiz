@@ -275,3 +275,46 @@
     });
   };
 }(jQuery, window, document));
+
+function renderQuiz(num_questions, source, topic) {
+    let data = {"subject": data_subject}
+
+    if (num_questions != -1) {
+        data.num = num_questions;
+    }
+
+    if (source != -1) {
+        data.source = source;
+    }
+
+    if (topic != -1) {
+        data.topic = topic;
+    }
+
+    $.getJSON("questions", data,
+    function(data) {
+        let questions = data;
+        $('#quiz').quiz({
+            resultsFormat: 'הצלחת %score שאלות מתוך %total!',
+            nextButtonText: 'הבא',
+            finishButtonText: 'סיום',
+            restartButtonText: 'התחלה מחדש',
+            counter: true,
+            counterFormat: 'שאלה %current מתוך %total',
+            questions: questions
+        });
+    });
+}
+
+
+$("#quiz-render-btn").click(function () {
+    num_questions = $("#select-num-questions").val();
+    source = $("#select-source").val();
+    topic = $("#select-topic").val();
+
+    renderQuiz(num_questions, source, topic);
+
+    $("#quiz").show();
+    $("#quiz-config").hide();
+})
+

@@ -6,10 +6,11 @@ COL_ENG = 1
 COL_ANSWER = 2
 COL_TOPIC = 3
 
+NO_TOPIC = "- ללא נושא -"
+
 
 @dataclass
 class Card:
-    source: str
     heb: str
     eng: str
     answer: str
@@ -33,7 +34,6 @@ class CardsLoader:
     def __init__(self, csv_rows):
         self._csv_rows = csv_rows
         self._cards = []
-        self._sources = []
         self._topics = []
 
     @staticmethod
@@ -43,26 +43,25 @@ class CardsLoader:
 
     def _read_cards(self):
         for row in self._csv_rows:
+            topic = row[COL_TOPIC].strip()
+            if not topic:
+                topic = NO_TOPIC
+
             card = Card(
-                source='',
                 heb=row[COL_HEB].strip(),
                 eng=row[COL_ENG].strip(),
                 answer=row[COL_ANSWER].strip(),
-                topic=row[COL_TOPIC].strip(),
+                topic=topic,
             )
 
             self._cards.append(card)
 
     def analyze(self):
         self._read_cards()
-        self._sources = list(set(card.source for card in self._cards))
         self._topics = sorted(list(set(card.topic for card in self._cards if card.topic)))
 
     def get_cards(self):
         return self._cards
-
-    def get_sources(self):
-        return self._sources
 
     def get_topics(self):
         return self._topics
