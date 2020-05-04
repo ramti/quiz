@@ -54,6 +54,9 @@ class CardsLoader:
                 topic=topic,
             )
 
+            if not card.answer or not (card.heb or card.eng):
+                continue
+
             self._cards.append(card)
 
     def analyze(self):

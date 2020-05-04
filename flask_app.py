@@ -8,7 +8,7 @@ import cards
 
 app = Flask(__name__)
 
-CONSTRUCTION = ["bio3"]
+CONSTRUCTION = []
 
 
 def my_render_template(*args, **kwargs):
