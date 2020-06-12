@@ -49,13 +49,13 @@ def get_quiz_questions():
 @app.route('/quiz/sources')
 def get_quiz_sources():
     subject = request.args.get('subject')
-    return json.dumps(questions.get_sources(subject))
+    return json.dumps(sorted(questions.get_sources(subject)))
 
 
 @app.route('/quiz/topics')
 def get_quiz_topics():
     subject = request.args.get('subject')
-    return json.dumps(questions.get_topics(subject))
+    return json.dumps(sorted(questions.get_topics(subject)))
 
 
 @app.route('/flash/<subject>')
