@@ -9,7 +9,9 @@ COL_START_ANS = 2
 COL_END_ANS = 7
 COL_CORRECT_ANS = 8
 COL_TOPIC = 9
-COL_COMMENT = 10
+COL_ORDER_MATTERS = 10
+COL_IMG_LINK = 11
+COL_COMMENT = 12
 
 
 @dataclass
@@ -78,7 +80,7 @@ class QuestionsLoader:
             question = Question(
                 source=row[COL_SOURCE],
                 question=row[COL_QUESTION],
-                img_link="",
+                img_link=row[COL_IMG_LINK],
                 topic=row[COL_TOPIC],
                 comment=row[COL_COMMENT],
                 answers=list()
