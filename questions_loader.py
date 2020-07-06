@@ -1,4 +1,5 @@
 import argparse
+import random
 import csv
 import json
 from dataclasses import dataclass
@@ -13,6 +14,7 @@ COL_ORDER_MATTERS = 10
 COL_IMG_LINK = 11
 COL_COMMENT = 12
 
+RANDOM_COMPLIMENTS = ['יפה!', 'מוששש', 'אש עלייך', '100 במבחן!', 'סחטיין', 'ניכר שלמדת!']
 
 @dataclass
 class Question:
@@ -53,7 +55,7 @@ class Question:
             'source': self.source,
             'img_link': self.img_link,
             'correctIndex': correct_index,
-            'correctResponse': 'יפה!',
+            'correctResponse': random.choices(RANDOM_COMPLIMENTS),
             'incorrectResponse': f'התשובה הנכונה: {answer_txt_list[correct_index]}'
         }
         return data
