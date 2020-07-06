@@ -70,7 +70,9 @@
 
         quizHtml += '<div id="questions">';
         $.each(questions, function(i, question) {
-            let bad_q_link = "https://docs.google.com/forms/d/e/1FAIpQLSdikza19-lYxo5I8eiDu3J80go6DxDFrYbTijmmSGWYVteAdA/viewform?usp=pp_url&entry.1198196845=" + encodeURI(question.q) + "&entry.2023241873=" + encodeURI(question.source);
+            let display_name = $('#data-display-name').html()
+            let q_source = display_name + ' - ' + question.source;
+            let bad_q_link = "https://docs.google.com/forms/d/e/1FAIpQLSdikza19-lYxo5I8eiDu3J80go6DxDFrYbTijmmSGWYVteAdA/viewform?usp=pp_url&entry.1198196845=" + encodeURI(question.q) + "&entry.2023241873=" + encodeURI(q_source);
           quizHtml += '<div class="question-container">';
           quizHtml += '<div id="quiz-q-info"><span class="q-source">' + question.source + '</span>';
           quizHtml += '<span class="q-topic">' + question.topic + '</span></div>';
