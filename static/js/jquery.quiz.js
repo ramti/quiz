@@ -2,6 +2,7 @@
 
   'use strict';
 
+
   $.quiz = function(el, options) {
     var base = this;
 
@@ -142,6 +143,7 @@
         if (selected === correct) {
           $answerEl.addClass('correct');
           response = questions[currentQuestionIndex].correctResponse;
+          saveCorrectQuestion(questions[currentQuestionIndex].q);
           score++;
         } else {
           $answerEl.addClass('incorrect');
@@ -278,7 +280,32 @@
   };
 }(jQuery, window, document));
 
-function renderQuiz(num_questions, source, topic) {
+function saveCorrectQuestion(question) {
+    var solvedQuestions = JSON.parse(localStorage.getItem("bioQuizSolvedQuestions"));
+    if (!solvedQuestions) {
+        solvedQuestions = [];
+    }
+    solvedQuestions.push(question);
+    localStorage.setItem("bioQuizSolvedQuestions", JSON.stringify(solvedQuestions));
+}
+
+function filterQuestions(questions, show_only_unsolved) {
+    var new_questions = questions.slice();
+    if (show_only_unsolved) {
+        var solvedQuestions = JSON.parse(localStorage.getItem("bioQuizSolvedQuestions"));
+        if (!solvedQuestions) {
+            solvedQuestions = [];
+        }
+        console.log(solvedQuestions);
+        var temp_arr = new_questions.filter(function(item) {
+            return !solvedQuestions.includes(item.q);
+        });
+        new_questions = temp_arr;
+    }
+    return new_questions;
+}
+
+function renderQuiz(num_questions, source, topic, show_only_unsolved) {
     let data = {"subject": data_subject}
 
     if (num_questions != -1) {
@@ -295,7 +322,7 @@ function renderQuiz(num_questions, source, topic) {
 
     $.getJSON("questions", data,
     function(data) {
-        let questions = data;
+        let questions = filterQuestions(data, show_only_unsolved);
         $('#quiz').quiz({
             resultsFormat: 'הצלחת %score שאלות מתוך %total!',
             nextButtonText: 'הבא',
@@ -313,10 +340,17 @@ $("#quiz-render-btn").click(function () {
     num_questions = $("#select-num-questions").val();
     source = $("#select-source").val();
     topic = $("#select-topic").val();
+    show_only_unsolved = $('#quiz-show-only-unsolved').prop('checked');
 
-    renderQuiz(num_questions, source, topic);
+    renderQuiz(num_questions, source, topic, show_only_unsolved);
 
     $("#quiz").show();
     $("#quiz-config").hide();
 })
+
+$("#quiz-clear-solved-questions").click(function () {
+    localStorage.setItem("bioQuizSolvedQuestions", JSON.stringify([]));
+    $("#quiz-clear-solved-questions").css('background-color', '#9e9e9e');
+})
+
 

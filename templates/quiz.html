@@ -39,9 +39,12 @@
             </td></tr>
             <tr><td>נושא שאלות:</td>
             <td><select id="select-topic"></select></td></tr>
+            <tr><td>
+                <a href="#" class="quiz-btn" id="quiz-clear-solved-questions">איפוס</a>
+            </td><td><input type="checkbox" id="quiz-show-only-unsolved" checked="checked" />הצג רק שאלות שלא עניתי עליהן</td></tr>
         </table>
         <p><a href="#" class="quiz-btn render-btn" id="quiz-render-btn">צור שאלון</a></p>
-        <p><a href="/flash/{{ subject }}" class="quiz-btn" id="goto-flashcards"><strong>חדש!</strong> נסו את הכרטיסיות שלנו &larr;</a></p>
+        <p><a href="/flash/{{ subject }}" class="quiz-btn" id="goto-flashcards"> מעבר לכרטיסיות&larr;</a></p>
     </div>
     <div id="quiz">
         <div id="quiz-start-screen">
