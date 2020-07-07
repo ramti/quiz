@@ -349,8 +349,10 @@ $("#quiz-render-btn").click(function () {
 })
 
 $("#quiz-clear-solved-questions").click(function () {
-    localStorage.setItem("bioQuizSolvedQuestions", JSON.stringify([]));
-    $("#quiz-clear-solved-questions").css('background-color', '#9e9e9e');
+    if (confirm('בדוק?')) {
+        localStorage.setItem("bioQuizSolvedQuestions", JSON.stringify([]));
+        $("#quiz-clear-solved-questions").css('background-color', '#9e9e9e');
+    }
 })
 
 
