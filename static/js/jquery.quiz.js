@@ -58,8 +58,7 @@
         });
 
         $(document).on('click', '#quiz-restart-btn, #quiz-retry-btn', function(e) {
-          e.preventDefault();
-          base.methods.restart();
+          location.reload();
         });
       },
       setup: function() {
@@ -296,7 +295,6 @@ function filterQuestions(questions, show_only_unsolved) {
         if (!solvedQuestions) {
             solvedQuestions = [];
         }
-        console.log(solvedQuestions);
         var temp_arr = new_questions.filter(function(item) {
             return !solvedQuestions.includes(item.q);
         });

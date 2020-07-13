@@ -28,6 +28,7 @@ RANDOM_COMPLIMENTS = ['יפה!',
                       'מינימום עדי שטרן',
                       'מרסלו היה גאה',
                       'נראה לי מגיע לך הפסקה!',
+                      'העפת לי את המריסטמה הקודקודית',
 ]
 
 
@@ -64,7 +65,7 @@ class Question:
         # correct_index = answer_txt_list.index(correct_answer_txt)
 
         data = {
-            'q': self.question,
+            'q': self.question.replace("\n", "<br />"),
             'options': answer_txt_list,
             'topic': self.topic,
             'source': self.source,
