@@ -18,7 +18,7 @@ def load_questions():
         file_path = os.path.join(module_dir, subject_data.question_db)
         csv_data = questions_loader.read_csv(file_path)
 
-        loader = questions_loader.QuestionsLoader(csv_data)
+        loader = questions_loader.QuestionsLoader(csv_data, allow_reoder=subject_data.allow_reorder)
         loader.analyze()
         print(f"Subject {subject_data.name}: loaded {len(loader.get_questions())} questions")
         subjects_db[subject_data.name] = loader

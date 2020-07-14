@@ -40,6 +40,7 @@ class Question:
     img_link: str
     topic: str
     comment: str
+    allow_reorder: bool
 
     def serialize_txt(self):
         data_lines = [self.question]
@@ -60,9 +61,10 @@ class Question:
                     correct_index = i
             answer_txt_list.append(answer_txt)
 
-        # correct_answer_txt = answer_txt_list[correct_index]
-        # random.shuffle(answer_txt_list)
-        # correct_index = answer_txt_list.index(correct_answer_txt)
+        if self.allow_reorder:
+            correct_answer_txt = answer_txt_list[correct_index]
+            random.shuffle(answer_txt_list)
+            correct_index = answer_txt_list.index(correct_answer_txt)
 
         data = {
             'q': self.question.replace("\n", "<br />"),
@@ -78,8 +80,10 @@ class Question:
 
 
 class QuestionsLoader:
-    def __init__(self, csv_rows):
+    def __init__(self, csv_rows, allow_reoder=False):
         self._csv_rows = csv_rows
+        self._allow_reorder = allow_reoder
+
         self._questions = []
         self._sources = []
         self._topics = []
@@ -101,7 +105,8 @@ class QuestionsLoader:
                 img_link=row[COL_IMG_LINK],
                 topic=row[COL_TOPIC],
                 comment=row[COL_COMMENT],
-                answers=list()
+                answers=list(),
+                allow_reorder=False
             )
 
             try:
@@ -109,6 +114,10 @@ class QuestionsLoader:
                 for i, col in enumerate(range(COL_START_ANS, COL_END_ANS + 1)):
                     if row[col]:
                         question.answers.append((row[col], (i + 1) in correct_ans))
+
+                # If the order doesn't matter ("FALSE"), then allow reorder
+                if self._allow_reorder and row[COL_ORDER_MATTERS] == "FALSE":
+                    question.allow_reorder = True
 
                 self._questions.append(question)
             except Exception as ex:
