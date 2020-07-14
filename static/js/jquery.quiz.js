@@ -142,7 +142,7 @@
         if (selected === correct) {
           $answerEl.addClass('correct');
           response = questions[currentQuestionIndex].correctResponse;
-          saveCorrectQuestion(questions[currentQuestionIndex].q);
+          saveCorrectQuestion(questions[currentQuestionIndex].hash);
           score++;
         } else {
           $answerEl.addClass('incorrect');
@@ -295,8 +295,9 @@ function filterQuestions(questions, show_only_unsolved) {
         if (!solvedQuestions) {
             solvedQuestions = [];
         }
+
         var temp_arr = new_questions.filter(function(item) {
-            return !solvedQuestions.includes(item.q);
+            return !solvedQuestions.includes(item.hash);
         });
         new_questions = temp_arr;
     }

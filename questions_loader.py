@@ -2,6 +2,7 @@ import argparse
 import random
 import csv
 import json
+import hashlib
 from dataclasses import dataclass
 
 COL_SOURCE = 0
@@ -42,12 +43,10 @@ class Question:
     comment: str
     allow_reorder: bool
 
-    def serialize_txt(self):
-        data_lines = [self.question]
-        for answer_txt, is_correct in self.answers:
-            prefix = "*" if is_correct else "-"
-            data_lines.append(f"{prefix}{answer_txt}")
-        return "\n".join(data_lines)
+    def hash(self):
+        hash_val = self.question + "".join([answer_txt for (answer_txt, _) in self.answers])
+        hash_val = hashlib.md5(hash_val.encode()).hexdigest()
+        return hash_val
 
     def serialize_web(self):
         correct_index = -1
@@ -74,15 +73,16 @@ class Question:
             'img_link': self.img_link,
             'correctIndex': correct_index,
             'correctResponse': random.choices(RANDOM_COMPLIMENTS),
-            'incorrectResponse': f'התשובה הנכונה: {answer_txt_list[correct_index]}'
+            'incorrectResponse': f'התשובה הנכונה: {answer_txt_list[correct_index]}',
+            'hash': self.hash()
         }
         return data
 
 
 class QuestionsLoader:
-    def __init__(self, csv_rows, allow_reoder=False):
+    def __init__(self, csv_rows, allow_reorder=False):
         self._csv_rows = csv_rows
-        self._allow_reorder = allow_reoder
+        self._allow_reorder = allow_reorder
 
         self._questions = []
         self._sources = []
