@@ -11,7 +11,7 @@ function load_sources() {
         // Remove all the options
         $dropdown.find('option').remove();
 
-        $dropdown.append($("<option />").val('-1').text('הכל'));
+        $dropdown.append($("<option selected='selected' />").val('-1').text('הכל'));
         $.each(sources, function() {
             $dropdown.append($("<option />").val(this).text(this));
         });
@@ -27,7 +27,7 @@ function load_topics() {
         // Remove all the options
         $dropdown.find('option').remove();
 
-        $dropdown.append($("<option />").val('-1').text('הכל'));
+        $dropdown.append($("<option selected='selected' />").val('-1').text('הכל'));
         $.each(sources, function() {
             $dropdown.append($("<option />").val(this).text(this));
         });

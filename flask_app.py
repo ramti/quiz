@@ -37,13 +37,13 @@ def quiz(subject):
 def get_quiz_questions():
     subject = request.args.get('subject')
     num_questions = request.args.get('num')
-    source = request.args.get('source')
-    topic = request.args.get('topic')
+    sources = request.args.getlist('source')
+    topics = request.args.getlist('topic')
 
     if num_questions is not None:
         num_questions = int(num_questions)
 
-    return json.dumps(questions.get_questions(subject, num_questions, source=source, topic=topic))
+    return json.dumps(questions.get_questions(subject, num_questions, sources=sources, topics=topics))
 
 
 @app.route('/quiz/sources')

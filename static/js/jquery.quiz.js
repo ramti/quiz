@@ -311,15 +311,26 @@ function renderQuiz(num_questions, source, topic, show_only_unsolved) {
         data.num = num_questions;
     }
 
-    if (source != -1) {
+    // Remove -1
+    index = source.indexOf('-1');
+    if (index != -1) {
+        source.splice(index, 1);
+    }
+
+    index = topic.indexOf('-1');
+    if (index != -1) {
+        topic.splice(index, 1);
+    }
+
+    if (source) {
         data.source = source;
     }
 
-    if (topic != -1) {
+    if (topic) {
         data.topic = topic;
     }
 
-    $.getJSON("questions", data,
+    $.getJSON("questions", $.param(data, true),
     function(data) {
         let questions = filterQuestions(data, show_only_unsolved);
         $('#quiz').quiz({
@@ -339,6 +350,7 @@ $("#quiz-render-btn").click(function () {
     num_questions = $("#select-num-questions").val();
     source = $("#select-source").val();
     topic = $("#select-topic").val();
+
     show_only_unsolved = $('#quiz-show-only-unsolved').prop('checked');
 
     renderQuiz(num_questions, source, topic, show_only_unsolved);

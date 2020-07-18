@@ -24,15 +24,15 @@ def load_questions():
         subjects_db[subject_data.name] = loader
 
 
-def get_questions(subject, num_questions, source=None, topic=None):
+def get_questions(subject, num_questions, sources=None, topics=None):
     loader = subjects_db[subject]
     questions_objs = loader.get_questions()[:]
 
-    if source is not None:
-        questions_objs = [obj for obj in questions_objs if obj.source == source]
+    if sources:
+        questions_objs = [obj for obj in questions_objs if obj.source in sources]
 
-    if topic is not None:
-        questions_objs = [obj for obj in questions_objs if obj.topic == topic]
+    if topics:
+        questions_objs = [obj for obj in questions_objs if obj.topic in topics]
     random.shuffle(questions_objs)
 
     if num_questions != -1:
