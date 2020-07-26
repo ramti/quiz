@@ -95,6 +95,7 @@
         // if results screen not in DOM, add it
         if ($(resultsScreen).length === 0) {
           quizHtml += '<div id="' + resultsScreen.substr(1) + '">';
+          quizHtml += '<img src="https://i.pinimg.com/originals/ec/c2/12/ecc2124116aa5a0ee1bc466c7b69dd8a.gif" />'
           quizHtml += '<p id="quiz-results"></p>';
           quizHtml += '</div>';
         }
@@ -209,6 +210,8 @@
         $('#quiz-next-btn').hide();
         $('#quiz-restart-btn').show();
         $(resultsScreen).show();
+        $('body').css('color', 'white');
+        $('body').css('background-color', 'black');
         var resultsStr = base.options.resultsFormat.replace('%score', score).replace('%total', numQuestions);
         $('#quiz-results').html(resultsStr);
 
