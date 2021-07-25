@@ -30,7 +30,8 @@ def quiz(subject):
 
     return my_render_template("quiz.html",
                               subject=subject,
-                              display_name=SUBJECTS_BY_NAME[subject].display_name)
+                              display_name=SUBJECTS_BY_NAME[subject].display_name,
+                              has_cards=SUBJECTS_BY_NAME[subject].cards_db is not None)
 
 
 @app.route('/quiz/questions')

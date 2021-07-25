@@ -44,7 +44,9 @@
             </td><td><input type="checkbox" id="quiz-show-only-unsolved" checked="checked" />הצג רק שאלות שלא עניתי עליהן</td></tr>
         </table>
         <p><a href="#" class="quiz-btn render-btn" id="quiz-render-btn">צור שאלון</a></p>
+        {% if has_cards %}
         <p><a href="/flash/{{ subject }}" class="quiz-btn" id="goto-flashcards"> מעבר לכרטיסיות&larr;</a></p>
+        {% endif %}
     </div>
     <div id="quiz">
         <div id="quiz-start-screen">
