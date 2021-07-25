@@ -125,7 +125,7 @@ class QuestionsLoader:
 
                 self._questions.append(question)
             except Exception as ex:
-                print(f"Error loading question: {ex}")
+                pass#print(f"Error loading question: {ex}")
 
     def analyze(self):
         self._read_questions()
