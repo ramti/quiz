@@ -105,6 +105,17 @@ a {
 #quiz-bad-question  {
     text-align: center;
     padding-bottom: 10px;
+    float: left;
+}
+
+#quiz-next-btn  {
+    background: #c35283;
+    color: white;
+    display: inline-block;
+    font-size: 11pt;
+    padding: 5px 12px 5px 12px;
+    float: right;
+    cursor: pointer;
 }
 
 .q-topic {

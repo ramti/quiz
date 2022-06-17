@@ -88,6 +88,7 @@
           });
           quizHtml += '</ul>';
           quizHtml += '<div id="quiz-bad-question"><a href="' + bad_q_link + '" target="_blank" class="quiz-btn">בעיה בשאלה</a></div>'
+          quizHtml += '<div id="quiz-next-btn">דילוג</div>'
           quizHtml += '</div>';
         });
         quizHtml += '</div>';
